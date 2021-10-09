@@ -66,19 +66,23 @@ public class Yum {
 						
 			ModAffichage.afficherGrille(grillePoint);	// Afficher la grille
 			ModAffichage.afficherDes(des); 				// Afficher les des
-			System.out.println(des[0] + " " + des[1] + " " + des[2] + " " + des[3] + " " + des[4]);
-			// Evaluer les coups possibles
+				// **** Affichage pour test, 0 = 6			
+				System.out.println(des[0] + " " + des[1] + " " + des[2] + " " + des[3] + " " + des[4]);
+			
+				// Evaluer les coups possibles
 			coupsPossible(grilleCoup, des);
 			
 			ModAffichage.afficherGrillePossibilite(grilleCoup);			
 			System.out.print("Entrez les numéros des dés que vous voulez rouler ou 0 (ex: 135): ");
-			clavier.nextLine();
 			
+				// Pour TESTER la detection des coups possibles
+			//clavier.nextLine();
+			lancerDes(des, "12345");
 			
 			nbEssais++;
 		}
-		
-		grillePoint[12] = 34;
+		// idk???
+		//grillePoint[12] = 34;
 	}
 	
 	
@@ -106,21 +110,26 @@ public class Yum {
 		grilleCoup[6] = six*6;
 		
 		// Evaluer les coups spéciaux
-			//	Brelan et Carre
-		int brelanOuCarre = evalueBrelanEtCarre(des);
-		grilleCoup[Constantes.BRELAN] = brelanOuCarre;
-		grilleCoup[Constantes.CARRE] = brelanOuCarre;
+			//	Brelan
+		int brelan = evalueBrelan(des);
+		grilleCoup[Constantes.BRELAN] = brelan;
+			// Carre
+		int carre = evalueCarre(des);
+		grilleCoup[Constantes.CARRE] = carre;
+			// YUM
+		int yum = evalueYUM(des);
+		grilleCoup[Constantes.YUM] = yum;
 	}
 	
 	/*
-	 *  Methode qui evalue l'occurence d'un BRELAN ET CARRE
+	 *  Methode qui evalue l'occurence d'un BRELAN
 	 */
-	public static int evalueBrelanEtCarre(int des[]) {
-		int brelanOuCarre = 0;
+	public static int evalueBrelan(int des[]) {
+		int brelan = 0;
 		
 		int des2[] = {0,0,0,0,0,0};
 		
-		for(int i = 1; i < des.length; i++) {
+		for(int i = 0; i < des.length; i++) {
 			switch(des[i]) {
 				case 1: des2[1]++; break;
 				case 2: des2[2]++; break;
@@ -131,28 +140,60 @@ public class Yum {
 			}
 		}
 		
-		// BRELAN
 		for(int i = 0; i < des2.length; i++) {
 			if (des2[i] == 3 && i!=0) {
-				brelanOuCarre = i*3;
+				brelan = i*3;
 			} else if (des2[i] == 3 && i==0) {
-				brelanOuCarre = 6*3;
+				brelan = 6*3;
 			}
 		}
 		
-		// CARRE
-		for(int i = 0; i < des2.length; i++) {
-			if (des2[i] == 4 && i!=0) {
-				brelanOuCarre = i*4;
-			} else if (des2[i] == 4 && i==0) {
-				brelanOuCarre = 6*4;
-			}
-		}
-		
-		return brelanOuCarre;
+		return brelan;
 	}
 
+	/*
+	 *  Methode qui evalue l'occurence d'un CARRE
+	 */
+	public static int evalueCarre(int des[]) {
+		int carre = 0;
+		
+		int des2[] = {0,0,0,0,0,0};
+		
+		for(int i = 0; i < des.length; i++) {
+			switch(des[i]) {
+				case 1: des2[1]++; break;
+				case 2: des2[2]++; break;
+				case 3: des2[3]++; break;
+				case 4: des2[4]++; break;
+				case 5: des2[5]++; break;
+				case 0: des2[0]++; break;
+			}
+		}
 
+		for(int i = 0; i < des2.length; i++) {
+			if (des2[i] == 4 && i!=0) {
+				carre = i*4;
+			} else if (des2[i] == 4 && i==0) {
+				carre = 6*4;
+			}
+		}
+		
+		return carre;
+	}
+	
+	/*
+	 *  Methode qui evalue l'occurence d'un YUM
+	 */
+	public static int evalueYUM(int des[]) {
+		int YUM = 0;
+		
+		if (des[0] == des[1] && des[0] == des[2] && des[0] == des[3] && des[0] == des[4]) {
+			YUM = 30;
+		}
+		
+		return YUM;
+	}
+	
 	/*
 	 *	Methode qui compte l'occurences de UN
 	 */

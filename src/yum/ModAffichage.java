@@ -86,7 +86,9 @@ public class ModAffichage {
 		 * Des appels sont ?crits sur 2 lignes pour respecter les 80 colonnes.
 		 * 
 		 * Un seul sous-programme utilis? qui affiche une ligne en 2 colonnes.
-		 */
+		 */	    
+		System.out.printf("\n--------------------------" + 
+                 "-----------------------------");
 	    System.out.printf("\n                   GRILLE DE POINTAGE");
 	    
 	    System.out.printf("\n--------------------------" + 
